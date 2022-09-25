@@ -1,0 +1,37 @@
+name: Build and Test
+
+on: [pull_request, push]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  project1:
+    name: "Project 1 - Calculator"
+    runs-on: ubuntu-latest
+
+    env:
+      SRC_PATH: ${{github.workspace}}/Project1_Calculator
+      BUILD_PATH: ${{github.workspace}}/Project1_Calculator/build
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Configure CMake
+      working-directory: ${{env.SRC_PATH}}
+      run: cmake -B ${{env.BUILD_PATH}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      env:
+        CXX: g++
+        CC: gcc
+
+    - name: Build
+      working-directory: ${{env.SRC_PATH}}
+      run: cmake --build ${{env.BUILD_PATH}} --config ${{env.BUILD_TYPE}}
+
+    - name: Test
+      working-directory: ${{env.BUILD_PATH}}
+      run: ctest -C ${{env.BUILD_TYPE}}
+
+    - name: Benchmark
+      working-directory: ${{env.BUILD_PATH}}
+      run: ./mul_benchmark
