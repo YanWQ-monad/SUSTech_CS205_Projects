@@ -2,6 +2,7 @@ from decimal import Decimal
 from time import perf_counter
 import ctypes
 import decimal
+import os
 import random
 import unittest
 
@@ -111,7 +112,7 @@ class CorrectnessTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    lib = ctypes.CDLL('libmul_abi@CMAKE_SHARED_LIBRARY_SUFFIX@')
+    lib = ctypes.CDLL(os.path.join(os.getcwd(), 'libmul_abi@CMAKE_SHARED_LIBRARY_SUFFIX@'))
     lib.create_biginteger.restype = ctypes.POINTER(BigInteger)
     lib.integer_multiplication.restype = ctypes.POINTER(BigInteger)
     lib.integer_string.restype = ctypes.c_char_p
