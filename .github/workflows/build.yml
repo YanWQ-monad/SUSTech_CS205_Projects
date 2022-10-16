@@ -35,3 +35,29 @@ jobs:
     - name: Benchmark
       working-directory: ${{env.BUILD_PATH}}
       run: ./mul_benchmark
+
+  project2:
+    name: "Project 2 - Calculator Ex"
+    runs-on: ubuntu-latest
+
+    env:
+      SRC_PATH: ${{github.workspace}}/Project2_CalculatorEx
+      BUILD_PATH: ${{github.workspace}}/Project2_CalculatorEx/build
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Configure CMake
+      working-directory: ${{env.SRC_PATH}}
+      run: cmake -B ${{env.BUILD_PATH}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      env:
+        CXX: g++
+        CC: gcc
+
+    - name: Build
+      working-directory: ${{env.SRC_PATH}}
+      run: cmake --build ${{env.BUILD_PATH}} --config ${{env.BUILD_TYPE}}
+
+    - name: Test
+      working-directory: ${{env.BUILD_PATH}}
+      run: ctest -C ${{env.BUILD_TYPE}}
