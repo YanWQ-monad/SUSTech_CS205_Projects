@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <cassert>
 #include <memory>
 #include <stack>
 #include <optional>

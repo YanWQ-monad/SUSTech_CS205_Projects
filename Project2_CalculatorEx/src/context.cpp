@@ -127,81 +127,82 @@ void Context::print(ostream &stream) const {
 }
 
 void load_builtin_context(Context &context) {
-    context.insert("sqrt", Entry::builtin_function([](auto args, Context &context) {
-        return sqrt(args[0]->eval(context), context.scale());
+    context.insert("sqrt", Entry::builtin_function([](auto args, Context &ctx) {
+        return sqrt(args[0]->eval(ctx), ctx.scale());
     }, 1));
 
-    context.insert("if", Entry::builtin_function([](auto args, Context &context) {
-        return ((args[0]->eval(context) != BIG_DECIMAL_ZERO) ? args[1] : args[2]) -> eval(context);
+    context.insert("if", Entry::builtin_function([](auto args, Context &ctx) {
+        return ((args[0]->eval(ctx) != BIG_DECIMAL_ZERO) ? args[1] : args[2]) -> eval(ctx);
     }, 3));
 
-    context.insert("floor", Entry::builtin_function([](auto args, Context &context) {
-        BigDecimal result = args[0]->eval(context);
+    context.insert("floor", Entry::builtin_function([](auto args, Context &ctx) {
+        BigDecimal result = args[0]->eval(ctx);
         result.drop_decimal();
         return result;
     }, 1));
 
-    context.insert("round", Entry::builtin_function([](auto args, Context &context) {
-        BigDecimal result = args[0]->eval(context);
-        result.round_by_scale(context.scale());
+    context.insert("round", Entry::builtin_function([](auto args, Context &ctx) {
+        BigDecimal result = args[0]->eval(ctx);
+        result.round_by_scale(ctx.scale());
         return result;
     }, 1));
 
-    context.insert("pow", Entry::builtin_function([](auto args, Context &context) {
-        BigDecimal lhs = args[0]->eval(context);
-        BigDecimal rhs = args[1]->eval(context);
+    context.insert("pow", Entry::builtin_function([](auto args, Context &ctx) {
+        BigDecimal lhs = args[0]->eval(ctx);
+        BigDecimal rhs = args[1]->eval(ctx);
         if (rhs.exponent() < 0)
             throw ranged_error(args[1]->range(), "pow[x, y] only accept integer y, or try powf[x, y] instead");
 
-        return pow(lhs, rhs, context.scale());
+        return pow(lhs, rhs, ctx.scale());
     }, 2));
 
-    context.insert("powf", Entry::builtin_function([](auto args, Context &context) {
-        BigDecimal lhs = args[0]->eval(context);
-        BigDecimal rhs = args[1]->eval(context);
+    context.insert("powf", Entry::builtin_function([](auto args, Context &ctx) {
+        BigDecimal lhs = args[0]->eval(ctx);
+        BigDecimal rhs = args[1]->eval(ctx);
 
-        BigDecimal tmp = pow(lhs, rhs, context.scale());
-        size_t scale = max(0LL, tmp.most_significant_exponent()) + context.scale() + kExtraScale;
+        BigDecimal tmp = pow(lhs, rhs, ctx.scale());
+        size_t scale = max(static_cast<int64_t>(0),
+                           tmp.most_significant_exponent()) + ctx.scale() + kExtraScale;
 
-        return exp(rhs * ln(lhs, scale), context.scale());
+        return exp(rhs * ln(lhs, scale), ctx.scale());
     }, 2));
 
-    context.insert("sin", Entry::builtin_function([](auto args, Context &context) {
-        return sin(args[0]->eval(context), context.scale());
+    context.insert("sin", Entry::builtin_function([](auto args, Context &ctx) {
+        return sin(args[0]->eval(ctx), ctx.scale());
     }, 1));
 
-    context.insert("cos", Entry::builtin_function([](auto args, Context &context) {
-        return cos(args[0]->eval(context), context.scale());
+    context.insert("cos", Entry::builtin_function([](auto args, Context &ctx) {
+        return cos(args[0]->eval(ctx), ctx.scale());
     }, 1));
 
-    context.insert("arctan", Entry::builtin_function([](auto args, Context &context) {
-        return arctan(args[0]->eval(context), context.scale());
+    context.insert("arctan", Entry::builtin_function([](auto args, Context &ctx) {
+        return arctan(args[0]->eval(ctx), ctx.scale());
     }, 1));
 
-    context.insert("exp", Entry::builtin_function([](auto args, Context &context) {
-        return exp(args[0]->eval(context), context.scale());
+    context.insert("exp", Entry::builtin_function([](auto args, Context &ctx) {
+        return exp(args[0]->eval(ctx), ctx.scale());
     }, 1));
 
-    context.insert("ln", Entry::builtin_function([](auto args, Context &context) {
-        return ln(args[0]->eval(context), context.scale());
+    context.insert("ln", Entry::builtin_function([](auto args, Context &ctx) {
+        return ln(args[0]->eval(ctx), ctx.scale());
     }, 1));
 
-    context.insert("phi", Entry::builtin_function([](auto args, Context &context) {
-        return phi(args[0]->eval(context), context.scale());
+    context.insert("phi", Entry::builtin_function([](auto args, Context &ctx) {
+        return phi(args[0]->eval(ctx), ctx.scale());
     }, 1));
 
-    context.insert("unset", Entry::builtin_function([](auto args, Context &context) {
+    context.insert("unset", Entry::builtin_function([](auto args, Context &ctx) {
         if (auto *identifier = dynamic_cast<VariableNode*>(args[0]))
-            return context.remove(identifier->name()) ? BIG_DECIMAL_ONE : BIG_DECIMAL_ZERO;
+            return ctx.remove(identifier->name()) ? BIG_DECIMAL_ONE : BIG_DECIMAL_ZERO;
         else
             throw ranged_error(args[0]->range(), "expected an identifier");
     }, 1));
 
-    context.insert("pi", Entry::lazy_variable([](Context &context) {
-        return pi(context.scale());
+    context.insert("pi", Entry::lazy_variable([](Context &ctx) {
+        return pi(ctx.scale());
     }));
 
-    context.insert("e", Entry::lazy_variable([](Context &context) {
-        return exp(BIG_DECIMAL_ONE, context.scale());
+    context.insert("e", Entry::lazy_variable([](Context &ctx) {
+        return exp(BIG_DECIMAL_ONE, ctx.scale());
     }));
 }

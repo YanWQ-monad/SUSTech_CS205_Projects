@@ -1,6 +1,7 @@
 #ifndef CALCULATOR_SRC_CONTEXT_H
 #define CALCULATOR_SRC_CONTEXT_H
 
+#include <functional>
 #include <memory>
 #include <string>
 #include <unordered_map>

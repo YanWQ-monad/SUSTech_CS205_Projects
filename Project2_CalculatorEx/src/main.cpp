@@ -1,5 +1,7 @@
 #include <unistd.h>  // isatty(fd)
+#include <cstring>
 #include <iostream>
+#include <iterator>
 #include <utility>
 
 #include "constant.h"

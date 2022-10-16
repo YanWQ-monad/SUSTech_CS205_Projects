@@ -18,7 +18,7 @@ FetchContent_MakeAvailable(googletest)  # benchmark
 #target_compile_options(mul_benchmark PRIVATE ${CXX_MY_FLAGS})
 
 
-include_directories(PRIVATE ${Calculator_SOURCE_DIR}/src)
+include_directories(${Calculator_SOURCE_DIR}/src)
 
 add_executable(unittest token_test.cpp parse_test.cpp test.hpp number_test.cpp)
 target_link_libraries(unittest GTest::gtest_main libcalc)

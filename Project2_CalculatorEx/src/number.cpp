@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <complex>
 #include <iostream>
+#include <iterator>
 #include <limits>
 #include <string>
 #include <utility>
@@ -527,7 +528,7 @@ BigDecimal BigDecimal::div_with_scale(const BigDecimal &rhs, const size_t scale)
     if (rhs.mantissa_.is_zero())
         throw runtime_error("div by zero");
 
-    size_t div_scale = max(0LL, most_significant_exponent() + static_cast<int64_t>(scale + kExtraScale));
+    size_t div_scale = max(static_cast<int64_t>(0), most_significant_exponent() + static_cast<int64_t>(scale + kExtraScale));
 
     // as rhs = "m * 10^n", use "1 * 10^{-n}" as initial
     BigDecimal initial(BigInteger({1}), - rhs.most_significant_exponent(), rhs.positive_);

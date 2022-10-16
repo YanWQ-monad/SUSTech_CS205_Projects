@@ -1,6 +1,7 @@
 #ifndef CALCULATOR_SRC_TOKEN_H
 #define CALCULATOR_SRC_TOKEN_H
 
+#include <cassert>
 #include <string>
 #include <utility>
 #include <variant>
