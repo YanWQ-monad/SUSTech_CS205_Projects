@@ -39,7 +39,7 @@
 | `gepb_parallel_gemm`             | 上上者 + 并行（pthread） |
 | `openblas_gemm`                  | OpenBLAS |
 
-### 总结
+### 碎碎念
 
 唔，这次 Project 也没什么时间（虽然上个 Project 也是那么说），从星期四才开始做。  
 不过我觉得矩阵优化的方法都比较地固定，所以可能按部就班就可以了，不用怎么思考。
