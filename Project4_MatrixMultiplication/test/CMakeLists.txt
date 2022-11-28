@@ -1,6 +1,5 @@
 # Google Benchmark & Test
 #set(BENCHMARK_ENABLE_LTO ON)
-set(BENCHMARK_ENABLE_LIBPFM ON)
 set(BENCHMARK_ENABLE_TESTING OFF)
 include(FetchContent)
 FetchContent_Declare(
@@ -19,7 +18,7 @@ find_package(BLAS REQUIRED)
 
 add_executable(matrix_benchmark benchmark.cpp)
 target_link_libraries(matrix_benchmark benchmark::benchmark matrix ${BLAS_LIBRARIES})
-target_compile_options(matrix_benchmark PRIVATE ${CXX_MY_FLAGS} -mcpu=apple-m1 -Ofast -lpthread)
+target_compile_options(matrix_benchmark PRIVATE ${CXX_MY_FLAGS} -march=native -flto -Ofast -lpthread)
 
 include_directories(PRIVATE ${MatrixMultiplication_SOURCE_DIR}/src)
 

@@ -61,3 +61,78 @@ jobs:
     - name: Test
       working-directory: ${{env.BUILD_PATH}}
       run: ctest -C ${{env.BUILD_TYPE}}
+
+  project3:
+    name: "Project 3 - Matrix"
+    runs-on: ubuntu-latest
+
+    env:
+      SRC_PATH: ${{github.workspace}}/Project3_Matrix
+      BUILD_PATH: ${{github.workspace}}/Project3_Matrix/build
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - run: sudo apt-get update && sudo apt-get install lcov -y && sudo rm -rf /var/lib/apt/lists/*
+
+    - name: Configure CMake
+      working-directory: ${{env.SRC_PATH}}
+      run: cmake -B ${{env.BUILD_PATH}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      env:
+        CXX: g++
+        CC: gcc
+
+    - name: Build docs
+      uses: mattnotmitt/doxygen-action@v1.9.4
+      with:
+        working-directory: Project3_Matrix/build
+        enable-latex: true
+        additional-packages: wqy-zenhei --repository https://nl.alpinelinux.org/alpine/edge/testing
+      env:
+        LATEX_CMD: xelatex
+
+    - name: Upload docs
+      uses: actions/upload-artifact@v3
+      with:
+        name: docs
+        path: |
+          ${{env.BUILD_PATH}}/html
+          ${{env.BUILD_PATH}}/latex
+
+    - name: Build
+      working-directory: ${{env.SRC_PATH}}
+      run: cmake --build ${{env.BUILD_PATH}} --config ${{env.BUILD_TYPE}}
+
+    - name: Test with coverage
+      working-directory: ${{env.BUILD_PATH}}
+      run: make coverage
+
+    - name: Upload coverage
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage
+        path: ${{env.BUILD_PATH}}/test/coverage_report
+
+  project4:
+    name: "Project 4 - Matrix Multiplication"
+    runs-on: ubuntu-latest
+
+    env:
+      SRC_PATH: ${{github.workspace}}/Project4_MatrixMultiplication
+      BUILD_PATH: ${{github.workspace}}/Project4_MatrixMultiplication/build
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - run: sudo apt-get update && sudo apt-get install libopenblas-dev -y && sudo rm -rf /var/lib/apt/lists/*
+
+    - name: Configure CMake
+      working-directory: ${{env.SRC_PATH}}
+      run: cmake -B ${{env.BUILD_PATH}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      env:
+        CXX: g++
+        CC: gcc
+
+    - name: Build
+      working-directory: ${{env.SRC_PATH}}
+      run: cmake --build ${{env.BUILD_PATH}} --config ${{env.BUILD_TYPE}}

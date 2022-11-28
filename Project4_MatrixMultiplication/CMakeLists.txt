@@ -6,10 +6,10 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(C_MY_FLAGS -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wdisabled-optimization -Wformat=2 -Winit-self
     -Wmissing-include-dirs -Wredundant-decls -Wshadow -Wstrict-overflow=5 -Wundef -Wno-unused -Wno-variadic-macros
-    -Wno-parentheses -fdiagnostics-show-option -mcpu=apple-m1 -Ofast)
+    -Wno-parentheses -fdiagnostics-show-option -march=native -flto -Ofast)
 set(CXX_MY_FLAGS -Wall -Wextra -pedantic -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization
     -Wformat=2 -Winit-self -Wmissing-include-dirs -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow
-    -Wsign-promo -Wstrict-overflow=5 -Wundef -Wno-unused -Wno-variadic-macros -Wno-parentheses -fdiagnostics-show-option -mcpu=apple-m1 -Ofast)
+    -Wsign-promo -Wstrict-overflow=5 -Wundef -Wno-unused -Wno-variadic-macros -Wno-parentheses -fdiagnostics-show-option -march=native -flto -Ofast)
 
 enable_testing()
 

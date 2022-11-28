@@ -17,7 +17,9 @@ TEST(CreateMatrixExTest, TooLargeTest) {
     EXPECT_EQ(createMatrixEx(size), nullptr);
     string output = testing::internal::GetCapturedStderr();
 
+#ifndef NDEBUG
     EXPECT_THAT(output, HasSubstr("failed to allocate 4611686018427387904 bytes for the matrix"));
+#endif
 }
 
 TEST(CreateMatrixTest, NullArgumentTest) {

@@ -63,26 +63,26 @@ class Executor {
     }
 };
 
-extern float *A_packed, *C_packed;
-static void DoSetup(const benchmark::State& state) {
-    const size_t N = state.range(0);
+// extern float *A_packed, *C_packed;
+// static void DoSetup(const benchmark::State& state) {
+//     const size_t N = state.range(0);
 
-    A_packed = static_cast<float*>(aligned_alloc(1024, N * 16 * sizeof(float)));
-    C_packed = static_cast<float*>(aligned_alloc(1024, N * N * sizeof(float)));
-}
+//     A_packed = static_cast<float*>(aligned_alloc(1024, N * 16 * sizeof(float)));
+//     C_packed = static_cast<float*>(aligned_alloc(1024, N * N * sizeof(float)));
+// }
 
-static void DoTeardown(const benchmark::State& state) {
-    free(A_packed);
-    free(C_packed);
-}
+// static void DoTeardown(const benchmark::State& state) {
+//     free(A_packed);
+//     free(C_packed);
+// }
 
 #define ADD_BENCHMARK(FUNC, BENCHMARK_NAME) \
     static void BENCHMARK_NAME(benchmark::State &state) {  \
         Executor(FUNC).execute(state);  \
         state.SetComplexityN(state.range(0));  \
     }  \
-    BENCHMARK(BENCHMARK_NAME)->DenseRange(16, 1024, 16)->Arg(1 << 11)->Arg(1 << 12)->Arg(1 << 13)->Setup(DoSetup)->Teardown(DoTeardown)->Complexity(benchmark::oNCubed);
-//    BENCHMARK(BENCHMARK_NAME)->Arg(16)->Arg(128)->Arg(1 << 10)->Arg(1 << 13)->Setup(DoSetup)->Teardown(DoTeardown)->Complexity(benchmark::oNCubed);
+    BENCHMARK(BENCHMARK_NAME)->Arg(16)->Arg(128)->Arg(1 << 10)->Arg(1 << 13)->Complexity(benchmark::oNCubed);
+    // BENCHMARK(BENCHMARK_NAME)->DenseRange(16, 1024, 16)->Arg(1 << 11)->Arg(1 << 12)->Arg(1 << 13)->Setup(DoSetup)->Teardown(DoTeardown)->Complexity(benchmark::oNCubed);
 
 ADD_BENCHMARK(gepb_gemm, BM_GEPBGemm)
 ADD_BENCHMARK(gepb_packed_b_gemm, BM_GEPBPackedBGemm)
