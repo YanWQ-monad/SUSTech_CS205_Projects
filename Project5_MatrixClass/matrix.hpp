@@ -2,6 +2,7 @@
 #define _MATRIX_CLASS_H_
 
 #include <cstddef>
+#include <limits>
 #include <memory>
 #include <sstream>
 
