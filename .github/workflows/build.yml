@@ -136,3 +136,27 @@ jobs:
     - name: Build
       working-directory: ${{env.SRC_PATH}}
       run: cmake --build ${{env.BUILD_PATH}} --config ${{env.BUILD_TYPE}}
+
+  project5:
+    name: "Project 5 - Matrix Class"
+    runs-on: ubuntu-latest
+
+    env:
+      SRC_PATH: ${{github.workspace}}/Project5_MatrixClass
+      BUILD_PATH: ${{github.workspace}}/Project5_MatrixClass/build
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - run: sudo apt-get update && sudo apt-get install libopenblas-dev -y && sudo rm -rf /var/lib/apt/lists/*
+
+    - name: Configure CMake
+      working-directory: ${{env.SRC_PATH}}
+      run: cmake -B ${{env.BUILD_PATH}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      env:
+        CXX: g++
+        CC: gcc
+
+    - name: Build
+      working-directory: ${{env.SRC_PATH}}
+      run: cmake --build ${{env.BUILD_PATH}} --config ${{env.BUILD_TYPE}}
