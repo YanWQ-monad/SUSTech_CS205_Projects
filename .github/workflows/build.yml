@@ -94,7 +94,7 @@ jobs:
     - name: Upload docs
       uses: actions/upload-artifact@v3
       with:
-        name: docs
+        name: project3_docs
         path: |
           ${{env.BUILD_PATH}}/html
           ${{env.BUILD_PATH}}/latex
@@ -110,7 +110,7 @@ jobs:
     - name: Upload coverage
       uses: actions/upload-artifact@v3
       with:
-        name: coverage
+        name: project3_coverage
         path: ${{env.BUILD_PATH}}/test/coverage_report
 
   project4:
