@@ -163,3 +163,9 @@ If you are sure what to do, you can disable the check with "--no_depth_check"
 ### 总结
 
 我想摸鱼。
+
+### 建议
+
+参考资料：倪泽堃《理性愉悦——高精度数值计算》，下载链接：https://github.com/YanWQ-monad/SUSTech_CS205_Projects/files/10820415/slide.pdf 。
+
+~~为什么当时我就没有找到那么好的资料。~~
